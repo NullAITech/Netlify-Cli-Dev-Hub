@@ -7,6 +7,8 @@
   --accent: #59f0b5;
   --accent-2: #74c7ff;
   --accent-3: #ffbe6b;
+  --accent-4: #7a5cff;
+  --accent-5: #ff6fd8;
   --text: #e7f1ff;
   --muted: #98b0c8;
   --outline: rgba(122, 155, 196, 0.2);
@@ -21,10 +23,11 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: 'Sora', 'Space Grotesk', system-ui, sans-serif;
-  background: radial-gradient(circle at top, rgba(116, 199, 255, 0.18), transparent 45%),
-    radial-gradient(circle at 20% 20%, rgba(89, 240, 181, 0.16), transparent 50%),
-    radial-gradient(circle at 80% 10%, rgba(255, 190, 107, 0.12), transparent 35%),
+  font-family: 'Space Grotesk', 'Sora', system-ui, sans-serif;
+  background: radial-gradient(circle at 10% 10%, rgba(122, 92, 255, 0.25), transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(255, 111, 216, 0.18), transparent 40%),
+    radial-gradient(circle at 20% 65%, rgba(116, 199, 255, 0.2), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(89, 240, 181, 0.2), transparent 45%),
     #07090f;
   color: var(--text);
 }
@@ -44,6 +47,62 @@ a {
   overflow: hidden;
 }
 
+.spline-world {
+  position: absolute;
+  inset: -15%;
+  pointer-events: none;
+  z-index: 0;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+  opacity: 0.9;
+}
+
+.spline-layer {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.spline-layer--grid {
+  background-image: radial-gradient(circle at center, rgba(124, 92, 255, 0.08), transparent 60%),
+    linear-gradient(rgba(116, 199, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(116, 199, 255, 0.08) 1px, transparent 1px);
+  background-size: 100% 100%, 120px 120px, 120px 120px;
+  transform: rotateX(65deg) translateZ(-120px);
+  filter: drop-shadow(0 0 40px rgba(116, 199, 255, 0.2));
+  animation: gridFloat 24s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+.spline-layer--rings {
+  background-image: conic-gradient(from 120deg, rgba(89, 240, 181, 0.2), transparent 40%, rgba(255, 111, 216, 0.22)),
+    radial-gradient(circle at 70% 30%, rgba(122, 92, 255, 0.25), transparent 45%),
+    radial-gradient(circle at 30% 70%, rgba(255, 190, 107, 0.2), transparent 40%);
+  mask-image: radial-gradient(circle, transparent 35%, #000 36%, #000 62%, transparent 66%);
+  transform: rotateZ(18deg) translateZ(-40px);
+  opacity: 0.55;
+  animation: ringSpin 40s linear infinite;
+}
+
+.spline-layer--beams {
+  background-image: linear-gradient(120deg, rgba(255, 111, 216, 0.18), transparent 45%),
+    linear-gradient(240deg, rgba(89, 240, 181, 0.16), transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(116, 199, 255, 0.18), transparent 55%);
+  transform: rotateX(15deg) translateZ(80px);
+  animation: beamDrift 18s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+.spline-layer--comet {
+  background-image: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.15), transparent 45%),
+    linear-gradient(110deg, transparent 10%, rgba(122, 92, 255, 0.3) 45%, transparent 60%),
+    linear-gradient(300deg, transparent 15%, rgba(89, 240, 181, 0.25) 45%, transparent 65%);
+  filter: blur(6px);
+  transform: translateZ(140px);
+  animation: cometSweep 22s ease-in-out infinite;
+  opacity: 0.5;
+}
+
 .reduce-motion * {
   animation: none !important;
   transition: none !important;
@@ -58,7 +117,7 @@ a {
   border-radius: 50%;
   filter: blur(80px);
   opacity: 0.45;
-  z-index: 0;
+  z-index: 1;
 }
 
 .app-shell::before {
@@ -81,7 +140,7 @@ a {
   background-size: 120px 120px;
   opacity: 0.2;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 .noise-overlay {
@@ -91,7 +150,7 @@ a {
   mix-blend-mode: soft-light;
   opacity: 0.4;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .floating-orb {
@@ -101,7 +160,7 @@ a {
   border-radius: 50%;
   filter: blur(0px);
   opacity: 0.25;
-  z-index: 0;
+  z-index: 1;
   animation: drift 20s ease-in-out infinite;
 }
 
@@ -124,6 +183,8 @@ a {
   border-radius: var(--radius);
   backdrop-filter: blur(14px);
   box-shadow: var(--glow);
+  position: relative;
+  overflow: hidden;
 }
 
 .glass-panel--heavy {
@@ -134,6 +195,16 @@ a {
 .glass-panel--hero {
   position: relative;
   overflow: hidden;
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.08), transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(122, 92, 255, 0.12), transparent 50%);
+  opacity: 0.8;
+  pointer-events: none;
 }
 
 .glass-panel--hero::after {
@@ -160,6 +231,14 @@ a {
 
 .mono {
   font-family: 'JetBrains Mono', 'Space Grotesk', monospace;
+}
+
+.MuiTypography-h3,
+.MuiTypography-h4,
+.MuiTypography-h5,
+.MuiTypography-h6 {
+  font-family: 'Syne', 'Space Grotesk', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 .stat-pill {
@@ -200,7 +279,7 @@ a {
 }
 
 .site-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
   border-color: rgba(89, 240, 181, 0.45);
   box-shadow: 0 30px 60px rgba(4, 8, 18, 0.65);
 }
@@ -245,11 +324,51 @@ a {
   }
 }
 
+@keyframes gridFloat {
+  0%,
+  100% {
+    transform: rotateX(65deg) translateZ(-120px) translateY(0);
+  }
+  50% {
+    transform: rotateX(65deg) translateZ(-120px) translateY(-40px);
+  }
+}
+
+@keyframes ringSpin {
+  to {
+    transform: rotateZ(360deg) translateZ(-40px);
+  }
+}
+
+@keyframes beamDrift {
+  0%,
+  100% {
+    transform: rotateX(15deg) translateZ(80px) translateX(0);
+  }
+  50% {
+    transform: rotateX(15deg) translateZ(80px) translateX(-60px);
+  }
+}
+
+@keyframes cometSweep {
+  0%,
+  100% {
+    transform: translate3d(-80px, 40px, 140px) rotateZ(-4deg);
+  }
+  50% {
+    transform: translate3d(120px, -60px, 140px) rotateZ(6deg);
+  }
+}
+
 @media (max-width: 900px) {
   .app-shell::before,
   .app-shell::after {
     width: 400px;
     height: 400px;
     filter: blur(60px);
+  }
+
+  .spline-world {
+    inset: -30%;
   }
 }

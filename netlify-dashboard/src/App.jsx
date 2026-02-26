@@ -152,6 +152,12 @@ export default function App() {
 
   return (
     <Box className={`app-shell${motionReduced ? ' reduce-motion' : ''}`} sx={{ pb: 12 }}>
+      <Box className="spline-world" aria-hidden="true">
+        <Box className="spline-layer spline-layer--grid" />
+        <Box className="spline-layer spline-layer--rings" />
+        <Box className="spline-layer spline-layer--beams" />
+        <Box className="spline-layer spline-layer--comet" />
+      </Box>
       <Box className="grid-overlay" />
       <Box className="noise-overlay" />
       <Box className="floating-orb orb-one" />
@@ -219,7 +225,7 @@ export default function App() {
         {loading && <LinearProgress color="success" />}
       </AppBar>
 
-      <Container sx={{ position: 'relative', zIndex: 1, mt: 6 }}>
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, mt: 6 }}>
         <Box
           className="glass-panel glass-panel--hero"
           sx={{
@@ -355,7 +361,7 @@ export default function App() {
           </Typography>
         </Box>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent="center">
           {filteredSites.map((site, index) => (
             <Grid
               item
